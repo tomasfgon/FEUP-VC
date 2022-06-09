@@ -1,13 +1,17 @@
 import xml.etree.ElementTree as ET
 
-#train = open("../dataset/train.txt", "r")
-test = open("../dataset/test.txt", "r")
+import os
 
-#train_csv = open("../dataset/train_csv.csv", "w")
-test_csv = open("../dataset/test_csv.csv", "w")
+print(os.getcwd())
 
-for image in test:
-    root = ET.parse('../dataset/annotations/' + image[:-1] + '.xml').getroot()
+train = open("VC-Group4/proj2/dataset/train.txt", "r")
+#test = open("VC-Group4/proj2/dataset/test.txt", "r")
+
+train_csv = open("VC-Group4/proj2/dataset/train_csv.csv", "w")
+#test_csv = open("VC-Group4/proj2/dataset/test_csv.csv", "w")
+
+for image in train:
+    root = ET.parse('VC-Group4/proj2/dataset/annotations/' + image[:-1] + '.xml').getroot()
     annotations = {}
     classArray = []
     for child in root:
@@ -32,12 +36,21 @@ for image in test:
                     if (area > maxArea):
                         maxArea = area
                         maxSign = name
+    
+    if (name == 'speedlimit'):
+        num = 0
+    elif (name == 'trafficlight'):
+        num = 1
+    elif (name == 'crosswalk'):
+        num = 2
+    elif (name == 'stop'):
+        num = 3
                 
-    #train_csv.write(image[:-1] + ',' + name + '\n')
-    test_csv.write(image[:-1] + ',' + name + '\n')
+    train_csv.write(image[:-1] + ',' + str(num) + '\n')
+    #test_csv.write(image[:-1] + ',' + str(num) + '\n')
 
-#train.close()
-test.close()
+train.close()
+#test.close()
 
-#train_csv.close()
-test_csv.close()
+train_csv.close()
+#test_csv.close()
